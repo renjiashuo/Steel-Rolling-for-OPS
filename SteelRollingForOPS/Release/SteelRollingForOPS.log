@@ -1,0 +1,41 @@
+﻿生成启动时间为 2017/2/7 9:08:22。
+     1>项目“C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\SteelRollingForOPS\SteelRollingForOPS.vcxproj”在节点 2 上(Rebuild 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt basic.cpp ga.cpp HR.cpp main.cpp random.cpp ROLLPASS.cpp time.cpp
+         basic.cpp
+         ga.cpp
+     1>ga.cpp(74): warning C4018: “<”: 有符号/无符号不匹配
+     1>ga.cpp(76): warning C4018: “<”: 有符号/无符号不匹配
+     1>ga.cpp(89): warning C4018: “<”: 有符号/无符号不匹配
+     1>ga.cpp(91): warning C4018: “<”: 有符号/无符号不匹配
+     1>ga.cpp(102): warning C4018: “<”: 有符号/无符号不匹配
+     1>ga.cpp(275): warning C4018: “<”: 有符号/无符号不匹配
+     1>ga.cpp(288): warning C4244: “+=”: 从“time_t”转换到“int”，可能丢失数据
+     1>ga.cpp(332): warning C4018: “<”: 有符号/无符号不匹配
+     1>ga.cpp(364): warning C4018: “<”: 有符号/无符号不匹配
+         HR.cpp
+     1>HR.cpp(150): warning C4244: “=”: 从“double”转换到“time_t”，可能丢失数据
+     1>HR.cpp(253): warning C4018: “<”: 有符号/无符号不匹配
+     1>HR.cpp(255): warning C4018: “<”: 有符号/无符号不匹配
+     1>HR.cpp(297): warning C4018: “<”: 有符号/无符号不匹配
+     1>HR.cpp(330): warning C4018: “<”: 有符号/无符号不匹配
+         main.cpp
+         random.cpp
+         ROLLPASS.cpp
+         time.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\Release\SteelRollingForOPS.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\Release\SteelRollingForOPS.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\Release\SteelRollingForOPS.lib" /MACHINE:X86 /SAFESEH Release\basic.obj
+         Release\ga.obj
+         Release\HR.obj
+         Release\main.obj
+         Release\random.obj
+         Release\ROLLPASS.obj
+         Release\time.obj
+         正在生成代码
+         已完成代码的生成
+         SteelRollingForOPS.vcxproj -> C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\Release\SteelRollingForOPS.exe
+     1>已完成生成项目“C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\SteelRollingForOPS\SteelRollingForOPS.vcxproj”(Rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:04.93

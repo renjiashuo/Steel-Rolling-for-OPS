@@ -1,0 +1,72 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+#	new file:   Debug/SteelRollingForOPS.exe
+#	new file:   Debug/SteelRollingForOPS.ilk
+#	new file:   Debug/SteelRollingForOPS.pdb
+#	new file:   Release/SteelRollingForOPS.exe
+#	new file:   Release/SteelRollingForOPS.pdb
+#	new file:   SteelRollingForOPS.sdf
+#	new file:   SteelRollingForOPS.sln
+#	new file:   SteelRollingForOPS.v12.suo
+#	new file:   SteelRollingForOPS/Debug/HR.obj
+#	new file:   SteelRollingForOPS/Debug/ROLLPASS.obj
+#	new file:   SteelRollingForOPS/Debug/SteelRol.09BB8D46.tlog/CL.read.1.tlog
+#	new file:   SteelRollingForOPS/Debug/SteelRol.09BB8D46.tlog/CL.write.1.tlog
+#	new file:   SteelRollingForOPS/Debug/SteelRol.09BB8D46.tlog/SteelRollingForOPS.lastbuildstate
+#	new file:   SteelRollingForOPS/Debug/SteelRol.09BB8D46.tlog/cl.command.1.tlog
+#	new file:   SteelRollingForOPS/Debug/SteelRol.09BB8D46.tlog/link.command.1.tlog
+#	new file:   SteelRollingForOPS/Debug/SteelRol.09BB8D46.tlog/link.read.1.tlog
+#	new file:   SteelRollingForOPS/Debug/SteelRol.09BB8D46.tlog/link.write.1.tlog
+#	new file:   SteelRollingForOPS/Debug/SteelRollingForOPS.Build.CppClean.log
+#	new file:   SteelRollingForOPS/Debug/SteelRollingForOPS.log
+#	new file:   SteelRollingForOPS/Debug/basic.obj
+#	new file:   SteelRollingForOPS/Debug/ga.obj
+#	new file:   SteelRollingForOPS/Debug/main.obj
+#	new file:   SteelRollingForOPS/Debug/random.obj
+#	new file:   SteelRollingForOPS/Debug/time.obj
+#	new file:   SteelRollingForOPS/Debug/vc120.idb
+#	new file:   SteelRollingForOPS/Debug/vc120.pdb
+#	new file:   SteelRollingForOPS/HR.cpp
+#	new file:   SteelRollingForOPS/HR.h
+#	new file:   SteelRollingForOPS/ROLLPASS.cpp
+#	new file:   SteelRollingForOPS/ROLLPASS.h
+#	new file:   SteelRollingForOPS/Release/HR.obj
+#	new file:   SteelRollingForOPS/Release/ROLLPASS.obj
+#	new file:   SteelRollingForOPS/Release/SteelRol.09BB8D46.tlog/CL.read.1.tlog
+#	new file:   SteelRollingForOPS/Release/SteelRol.09BB8D46.tlog/CL.write.1.tlog
+#	new file:   SteelRollingForOPS/Release/SteelRol.09BB8D46.tlog/SteelRollingForOPS.lastbuildstate
+#	new file:   SteelRollingForOPS/Release/SteelRol.09BB8D46.tlog/cl.command.1.tlog
+#	new file:   SteelRollingForOPS/Release/SteelRol.09BB8D46.tlog/link.command.1.tlog
+#	new file:   SteelRollingForOPS/Release/SteelRol.09BB8D46.tlog/link.read.1.tlog
+#	new file:   SteelRollingForOPS/Release/SteelRol.09BB8D46.tlog/link.write.1.tlog
+#	new file:   SteelRollingForOPS/Release/SteelRollingForOPS.Build.CppClean.log
+#	new file:   SteelRollingForOPS/Release/SteelRollingForOPS.log
+#	new file:   SteelRollingForOPS/Release/basic.obj
+#	new file:   SteelRollingForOPS/Release/ga.obj
+#	new file:   SteelRollingForOPS/Release/main.obj
+#	new file:   SteelRollingForOPS/Release/random.obj
+#	new file:   SteelRollingForOPS/Release/time.obj
+#	new file:   SteelRollingForOPS/Release/vc120.pdb
+#	new file:   SteelRollingForOPS/SteelRollingForOPS.vcxproj
+#	new file:   SteelRollingForOPS/SteelRollingForOPS.vcxproj.filters
+#	new file:   SteelRollingForOPS/TOPPPHR01.csv
+#	new file:   SteelRollingForOPS/TOPPPHR01.xlsx
+#	new file:   SteelRollingForOPS/TOPPPROLLPASS.csv
+#	new file:   SteelRollingForOPS/TOPPPROLLPASS.xlsx
+#	new file:   SteelRollingForOPS/basic.cpp
+#	new file:   SteelRollingForOPS/basic.h
+#	new file:   SteelRollingForOPS/ga.cpp
+#	new file:   SteelRollingForOPS/ga.h
+#	new file:   SteelRollingForOPS/main.cpp
+#	new file:   SteelRollingForOPS/random.cpp
+#	new file:   SteelRollingForOPS/random.h
+#	new file:   SteelRollingForOPS/time.cpp
+#	new file:   SteelRollingForOPS/time.h
+#
+

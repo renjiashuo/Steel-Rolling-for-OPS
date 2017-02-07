@@ -1,0 +1,40 @@
+﻿生成启动时间为 2017/2/7 9:08:00。
+     1>项目“C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\SteelRollingForOPS\SteelRollingForOPS.vcxproj”在节点 2 上(Rebuild 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt basic.cpp ga.cpp HR.cpp main.cpp random.cpp ROLLPASS.cpp time.cpp
+         time.cpp
+         ROLLPASS.cpp
+         random.cpp
+         main.cpp
+         HR.cpp
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\hr.cpp(150): warning C4244: “=”: 从“double”转换到“time_t”，可能丢失数据
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\hr.cpp(253): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\hr.cpp(255): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\hr.cpp(297): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\hr.cpp(330): warning C4018: “<”: 有符号/无符号不匹配
+         ga.cpp
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\ga.cpp(74): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\ga.cpp(76): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\ga.cpp(89): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\ga.cpp(91): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\ga.cpp(102): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\ga.cpp(275): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\ga.cpp(288): warning C4244: “+=”: 从“time_t”转换到“int”，可能丢失数据
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\ga.cpp(332): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\wsgbcsc\documents\github\steel-rolling-for-ops\steelrollingforops\ga.cpp(364): warning C4018: “<”: 有符号/无符号不匹配
+         basic.cpp
+         正在生成代码...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\Debug\SteelRollingForOPS.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\Debug\SteelRollingForOPS.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\Debug\SteelRollingForOPS.lib" /MACHINE:X86 Debug\basic.obj
+         Debug\ga.obj
+         Debug\HR.obj
+         Debug\main.obj
+         Debug\random.obj
+         Debug\ROLLPASS.obj
+         Debug\time.obj
+         SteelRollingForOPS.vcxproj -> C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\Debug\SteelRollingForOPS.exe
+     1>已完成生成项目“C:\Users\wsgbcsc\Documents\GitHub\Steel-Rolling-for-OPS\SteelRollingForOPS\SteelRollingForOPS.vcxproj”(Rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:04.17
