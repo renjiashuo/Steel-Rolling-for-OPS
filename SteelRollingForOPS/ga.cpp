@@ -274,27 +274,27 @@ int GA::ComputeDistance(vector<int> individual)
 	beginTime = hr1->m_NEST_t > endTime ? hr1->m_NEST_t : endTime;
 	for (int i = 1; i < individual.size(); i++)
 	{
+		// 计算frequency
+		int NO2 = individual[i];
+		HR* hr2 = HR::s_mapSetOfHR.find(NO2)->second;
+		ROLLPASS* rollPass2 = hr2->m_rollPass;
+		int frequency = ROLLPASS::s_distance.find(make_pair(rollPass1, rollPass2))->second;
+		switchFrequency += frequency;
+		endTime = beginTime + hr1->m_MAKING_TIME_t;
+		// 计算absTime
+		absTime += (beginTime - hr1->m_NEST_t);
+		NO1 = NO2;
+		hr1 = hr2;
+		rollPass1 = rollPass2;
+		beginTime = hr1->m_NEST_t > endTime ? hr1->m_NEST_t : endTime;
 		if (beginTime < hr1->m_NLST_t)
 		{
 			selectHRnum++;
-			// 计算frequency
-			int NO2 = individual[i];
-			HR* hr2 = HR::s_mapSetOfHR.find(NO2)->second;
-			ROLLPASS* rollPass2 = hr2->m_rollPass;
-			int frequency = ROLLPASS::s_distance.find(make_pair(rollPass1, rollPass2))->second;
-			switchFrequency += frequency;
-			endTime = beginTime + hr1->m_MAKING_TIME_t;
-			// 计算absTime
-			absTime += (beginTime - hr1->m_NEST_t);
-			NO1 = NO2;
-			hr1 = hr2;
-			rollPass1 = rollPass2;
-			beginTime = hr1->m_NEST_t > endTime ? hr1->m_NEST_t : endTime;
 		}
 	}
 	// 思考：孔型如何与时间加权。
 	string endTimeStr = Time::DatetimeToString(endTime + HR::s_standTime);
-	sum = int((HR::s_HRCount - selectHRnum) * 1000 / HR::s_HRCount) + switchFrequency /*+ endTime / 2500 + absTime / 4000000*/;
+	sum = int((HR::s_HRCount - selectHRnum) * 10000 / HR::s_HRCount) + switchFrequency /*+ endTime / 2500 + absTime / 4000000*/;
 	return sum;
 }
 
@@ -337,21 +337,18 @@ void GA::printResult(vector<int> newSequence)
 			iter->m_new_BEGIN_TIME_t = iter->m_NEST_t;
 			iter->m_new_FINISH_TIME_t = iter->m_new_BEGIN_TIME_t + iter->m_MAKING_TIME_t;
 			endTime = iter->m_new_FINISH_TIME_t;
+			iter->m_STATUS = "1";
 		}
 		else
 		{
 			//HR* lastIter = HR::s_mapSetOfHR.find(newSequence[i - 1])->second;
 			iter->m_new_BEGIN_TIME_t = endTime >iter->m_NEST_t ? endTime : iter->m_NEST_t;
+			iter->m_new_FINISH_TIME_t = iter->m_new_BEGIN_TIME_t + iter->m_MAKING_TIME_t;
+			endTime = iter->m_new_FINISH_TIME_t;
 			if (iter->m_new_BEGIN_TIME_t > iter->m_NLST_t)
-			{
-				iter->m_new_BEGIN_TIME_t = -HR::s_standTime;
-				iter->m_new_FINISH_TIME_t = -HR::s_standTime;
-			}
+				iter->m_STATUS = "0";
 			else
-			{
-				iter->m_new_FINISH_TIME_t = iter->m_new_BEGIN_TIME_t + iter->m_MAKING_TIME_t;
-				endTime = iter->m_new_FINISH_TIME_t;
-			}
+				iter->m_STATUS = "1";
 		}
 	}
 	//for (int i = newSequence.size() - 2; i >= 0; i--)
