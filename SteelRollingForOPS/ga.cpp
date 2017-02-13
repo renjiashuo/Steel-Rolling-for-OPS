@@ -108,11 +108,13 @@ vector<int> GA::GenerateSequenceTour2()// 待完成
 
 void GA::ComputeFitness()
 {
-	int max = -1;
+	long long max = -1;
 	for(int i = 0; i < PopSize; i++)
 	{
 		fitness[i] = ComputeDistance(individual[i]);			//计算每个个体的旅行总距离
-		max = fitness[i] > max ? fitness[i] : max;			//找出当前解中的旅行总距离最大值
+		max = fitness[i] < max ? fitness[i] : max;			//找出当前解中的旅行总距离最大值
+		//cout << min << endl;
+		//cout << bestValue << endl;
 		if( fitness[i] < bestValue )						//找出当前解中的最优解
 		{
 			bestValue = fitness[i];
@@ -189,7 +191,7 @@ void GA::Initialize()
 	Pc = 0.5;
 	Pm = 0.5;
 	best = vector<int>(HR::s_HRCount);
-	bestValue = 9999;
+	bestValue = LLONG_MAX;
 	prob = vector<double>(PopSize);
 	for (int i = 0; i < PopSize / 3; i++)		//给初始种群生成随机个体
 	{
@@ -242,6 +244,311 @@ void GA::SelectionAndCrossover()
 		CopySolution(&individual[PopSize+i], &individual[i]);
 }
 
+void GA::LocalSearch()
+{
+	for (int i = 0; i < PopSize; i++)					//对种群中每个个体做循环
+	{
+		if (random01() < Pm)							//变异概率
+		{
+			int number = randomInteger(1, 6);
+			switch (number)
+			{
+			case 1:// Job Move
+			{
+					   int i1 = randomInteger(0, HR::s_HRCount - 1);	//随机生成两个数
+					   int i2 = randomInteger(0, HR::s_HRCount - 1);
+					   while (i1 == i2)
+						   i2 = randomInteger(0, HR::s_HRCount - 1);
+					   if (i1 < i2)
+					   {
+						   for (int j = i1; j < i2; j++)
+						   {
+							   SwapOperator(j, j + 1, &individual[i]);		//对解中这两个位置的数交换
+						   }
+					   }
+					   else
+					   {
+						   for (int j = i1; j > i2; j--)
+						   {
+							   SwapOperator(j, j - 1, &individual[i]);		//对解中这两个位置的数交换
+						   }
+					   }
+					   break;
+			}
+			case 2:// Job Exchange
+			{
+ 
+					   break;
+			}
+			case 3:// Batch Move
+			{
+					   int i1 = randomInteger(0, HR::s_HRCount - 1);	//随机生成两个数
+					   int i2 = randomInteger(0, HR::s_HRCount - 1);
+					   while (i1 == i2)
+						   i2 = randomInteger(0, HR::s_HRCount - 1);
+					   int i11, i12, i21, i22;
+					   int NO1 = individual[i][i1];
+					   HR* hr1 = HR::s_mapSetOfHR.find(NO1)->second;
+					   int NO2 = individual[i][i2];
+					   HR* hr2 = HR::s_mapSetOfHR.find(NO2)->second;
+					   for (i11 = i1; i11 >= 0; i11--)
+					   {
+						   int NO11 = individual[i][i11];
+						   HR* hr11 = HR::s_mapSetOfHR.find(NO11)->second;
+						   if (hr1->m_OUT_THICK != hr11->m_OUT_THICK)
+						   {
+							   i11 += 1;
+							   break;
+						   }
+					   }
+					   for (i12 = i1; i12 < HR::s_HRCount; i12++)
+					   {
+						   int NO12 = individual[i][i12];
+						   HR* hr12 = HR::s_mapSetOfHR.find(NO12)->second;
+						   if (hr1->m_OUT_THICK != hr12->m_OUT_THICK)
+						   {
+							   i12 -= 1;
+							   break;
+						   }
+					   }
+					   for (i21 = i2; i21 >= 0; i21--)
+					   {
+						   int NO21 = individual[i][i21];
+						   HR* hr21 = HR::s_mapSetOfHR.find(NO21)->second;
+						   if (hr2->m_OUT_THICK != hr21->m_OUT_THICK)
+						   {
+							   i21 += 1;
+							   break;
+						   }
+					   }
+					   if (i21 == -1)
+						   i21 = 0;
+					   for (i22 = i2; i22 < HR::s_HRCount; i22++)
+					   {
+						   int NO22 = individual[i][i22];
+						   HR* hr22 = HR::s_mapSetOfHR.find(NO22)->second;
+						   if (hr2->m_OUT_THICK != hr22->m_OUT_THICK)
+						   {
+							   i22 -= 1;
+							   break;
+						   }
+					   }
+					   if (i12 == HR::s_HRCount)
+						   i12 = HR::s_HRCount;
+					   if (i11 == i21)
+						   break;
+					   if (i11 == i12 || i21 == i22)
+						   bool aaaaaa = true;
+					   vector<int> individual_temp;
+					   if (i11 < i21)
+					   {
+						   for (int j = 0; j < i11; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i12 + 1; j < i21; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   int qh = randomInteger(0, 1);
+						   if (qh == 0)
+						   {
+							   for (int j = i11; j <= i12; j++)
+							   {
+								   individual_temp.push_back(individual[i][j]);
+							   }
+							   for (int j = i21; j < HR::s_HRCount; j++)
+							   {
+								   individual_temp.push_back(individual[i][j]);
+							   }
+						   }
+						   else
+						   {
+							   break;
+							   /*for (int j = i21; j <= i22; j++)
+							   {
+							   individual_temp.push_back(individual[i][j]);
+							   }
+							   for (int j = i11; j <= i12; j++)
+							   {
+							   individual_temp.push_back(individual[i][j]);
+							   }
+							   for (int j = i22 + 1; j < HR::s_HRCount; j++)
+							   {
+							   individual_temp.push_back(individual[i][j]);
+							   }*/
+						   }
+					   }
+					   else
+					   {
+						   break;
+						   /*for (int j = 0; j < i21; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   int qh = randomInteger(0, 1);
+						   if (qh == 0)
+						   {
+							   for (int j = i11; j <= i12; j++)
+							   {
+								   individual_temp.push_back(individual[i][j]);
+							   }
+							   for (int j = i21; j < i11; j++)
+							   {
+								   individual_temp.push_back(individual[i][j]);
+							   }
+							   for (int j = i12 + 1; j < HR::s_HRCount; j++)
+							   {
+								   individual_temp.push_back(individual[i][j]);
+							   }
+						   }
+						   else
+						   {
+							   for (int j = i21; j <= i22; j++)
+							   {
+								   individual_temp.push_back(individual[i][j]);
+							   }
+							   for (int j = i11; j <= i12; j++)
+							   {
+								   individual_temp.push_back(individual[i][j]);
+							   }
+							   for (int j = i22 + 1; j < i11; j++)
+							   {
+								   individual_temp.push_back(individual[i][j]);
+							   }
+							   for (int j = i12 + 1; j < HR::s_HRCount; j++)
+							   {
+								   individual_temp.push_back(individual[i][j]);
+							   }
+						   }*/
+					   }
+					   int aaa = 0;
+					   if (individual_temp.size() != HR::s_HRCount)
+					   {
+						   aaa = 862;
+						   cout << endl;
+					   }
+					   individual[i] = individual_temp;
+					   break;
+			}
+			case 4:// Batch Exchange
+			{
+					   //int i1 = randomInteger(0, HR::s_HRCount - 1);	//随机生成两个数
+					   //int i2 = randomInteger(0, HR::s_HRCount - 1);
+					   //while (i1 == i2)
+						  // i2 = randomInteger(0, HR::s_HRCount - 1);
+					   //int i11, i12, i21, i22;
+					   //int NO1 = individual[i][i1];
+					   //HR* hr1 = HR::s_mapSetOfHR.find(NO1)->second;
+					   //int NO2 = individual[i][i2];
+					   //HR* hr2 = HR::s_mapSetOfHR.find(NO2)->second;
+					   //for (i11 = i1; i11 >= 0; i11--)
+					   //{
+						  // int NO11 = individual[i][i11];
+						  // HR* hr11 = HR::s_mapSetOfHR.find(NO11)->second;
+						  // if (hr1->m_OUT_THICK != hr11->m_OUT_THICK)
+						  // {
+							 //  i11 += 1;
+							 //  break;
+						  // }
+					   //}
+					   //for (i12 = i1; i12 < HR::s_HRCount; i12++)
+					   //{
+						  // int NO12 = individual[i][i12];
+						  // HR* hr12 = HR::s_mapSetOfHR.find(NO12)->second;
+						  // if (hr1->m_OUT_THICK != hr12->m_OUT_THICK)
+						  // {
+							 //  i12 -= 1;
+							 //  break;
+						  // }
+					   //}
+					   //for (i21 = i2; i21 >= 0; i21--)
+					   //{
+						  // int NO21 = individual[i][i21];
+						  // HR* hr21 = HR::s_mapSetOfHR.find(NO21)->second;
+						  // if (hr2->m_OUT_THICK != hr21->m_OUT_THICK)
+						  // {
+							 //  i21 += 1;
+							 //  break;
+						  // }
+					   //}
+					   //if (i21 == -1)
+						  // i21 = 0;
+					   //for (i22 = i2; i22 < HR::s_HRCount; i22++)
+					   //{
+						  // int NO22 = individual[i][i22];
+						  // HR* hr22 = HR::s_mapSetOfHR.find(NO22)->second;
+						  // if (hr2->m_OUT_THICK != hr22->m_OUT_THICK)
+						  // {
+							 //  i22 -= 1;
+							 //  break;
+						  // }
+					   //}
+					   //if (i12 == HR::s_HRCount)
+						  // i12 = HR::s_HRCount;
+					   //if (i11 == i21)
+						  // break;
+					   //if (i11 == i12 || i21 == i22)
+						  // bool aaaaaa = true;
+					   //vector<int> individual_temp;
+					   //if (i11 < i21)
+					   //{
+						  // for (int j = 0; j < i11; j++)
+						  // {
+							 //  individual_temp.push_back(individual[i][j]);
+						  // }
+						  // for (int j = i21; j <= i22; j++)
+						  // {
+							 //  individual_temp.push_back(individual[i][j]);
+						  // }
+						  // for (int j = i12 + 1; j < i21; j++)
+						  // {
+							 //  individual_temp.push_back(individual[i][j]);
+						  // }
+						  // for (int j = i11; j <= i12; j++)
+						  // {
+							 //  individual_temp.push_back(individual[i][j]);
+						  // }
+						  // for (int j = i22 + 1; j < HR::s_HRCount; j++)
+						  // {
+							 //  individual_temp.push_back(individual[i][j]);
+						  // }
+					   //}
+					   //else
+					   //{
+						  // for (int j = 0; j < i21; j++)
+						  // {
+							 //  individual_temp.push_back(individual[i][j]);
+						  // }
+						  // for (int j = i11; j <= i12; j++)
+						  // {
+							 //  individual_temp.push_back(individual[i][j]);
+						  // }
+						  // for (int j = i22 + 1; j < i11; j++)
+						  // {
+							 //  individual_temp.push_back(individual[i][j]);
+						  // }
+						  // for (int j = i21; j <= i22; j++)
+						  // {
+							 //  individual_temp.push_back(individual[i][j]);
+						  // }
+						  // for (int j = i12 + 1; j < HR::s_HRCount; j++)
+						  // {
+							 //  individual_temp.push_back(individual[i][j]);
+						  // }
+					   //}
+					   //if (individual_temp.size() != HR::s_HRCount)
+						  // bool aaa = true;
+					   //individual[i] = individual_temp;
+					   break;
+			}
+			default:
+				break;
+			}
+		}
+	}
+}
+
 void GA::GeneticAlgorithm()
 {
 	srand((unsigned)time(NULL));	//播下一颗时间的种子
@@ -254,19 +561,19 @@ void GA::GeneticAlgorithm()
 		if (g % 100 == 0)
 			cout << "已计算 " << g << "代" << endl;
 		ga.SelectionAndCrossover();		//选择和交叉
+		ga.LocalSearch();
 		ga.Mutation();				//变异
 		ga.ComputeFitness();			//更新新种群对应每个个体的目标函数值
 	}
 	ga.printResult(ga.best);		// 打印结果
 }
 
-int GA::ComputeDistance(vector<int> individual)
+long long GA::ComputeDistance(vector<int> individual)
 {
-	int sum = 0;
+	long long sum = 0;
 	int switchFrequency = 0;
 	int absTime = 0;
-	time_t beginTime = 0, endTime = 0;
-	int selectHRnum = 0;
+	time_t beginTime = 0, endTime = 0, tardiness = 0;
 	// 第一个
 	int NO1 = individual[0];
 	HR* hr1 = HR::s_mapSetOfHR.find(NO1)->second;
@@ -281,20 +588,22 @@ int GA::ComputeDistance(vector<int> individual)
 		int frequency = ROLLPASS::s_distance.find(make_pair(rollPass1, rollPass2))->second;
 		switchFrequency += frequency;
 		endTime = beginTime + hr1->m_MAKING_TIME_t;
-		// 计算absTime
-		absTime += (beginTime - hr1->m_NEST_t);
+		// 计算tardiness
+		int aTardiness = endTime - hr2->m_NLST_t > 0 ? endTime - hr2->m_NLST_t : 0;
+		//cout << aTardiness << endl;
+		tardiness += aTardiness;
+		// 切换到下一个
 		NO1 = NO2;
 		hr1 = hr2;
 		rollPass1 = rollPass2;
 		beginTime = hr1->m_NEST_t > endTime ? hr1->m_NEST_t : endTime;
-		if (beginTime < hr1->m_NLST_t)
-		{
-			selectHRnum++;
-		}
 	}
 	// 思考：孔型如何与时间加权。
 	string endTimeStr = Time::DatetimeToString(endTime + HR::s_standTime);
-	sum = int((HR::s_HRCount - selectHRnum) * 10000 / HR::s_HRCount) + switchFrequency /*+ endTime / 2500 + absTime / 4000000*/;
+	sum = tardiness;
+	//cout << sum << endl;
+	//cout << LLONG_MAX << endl;
+	//cout << (sum > LLONG_MAX ? "sum>LLONG_MAX" : "sum<LLONG_MAX") << endl;
 	return sum;
 }
 

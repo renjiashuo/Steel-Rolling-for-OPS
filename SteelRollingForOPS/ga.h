@@ -33,11 +33,11 @@ public:// 参数
 	int				Gen;			//循环次数
 	double			Pc;			//交叉概率
 	double			Pm;			//变异概率
-	int				bestValue;	// 目前最优解
+	long long				bestValue;	// 目前最优解
 
 public:// 集合
 	vector<vector<int>	 >	individual;	// 种群
-	vector<int>		fitness;		// 种群目标函数值
+	vector<long long>		fitness;		// 种群目标函数值
 	vector<double>	prob;		// 轮盘赌的盘
 	vector<int>		best;		// 目前最优解
 
@@ -70,10 +70,12 @@ public:
 	void Initialize();
 	//选择和交叉
 	void SelectionAndCrossover();
+	// localSearch
+	void LocalSearch();
 	//遗传算法主函数
 	static void GeneticAlgorithm();
 	// 计算每个个体的旅行总距离
-	int ComputeDistance(vector<int> individual);
+	long long ComputeDistance(vector<int> individual);
 	// copySolution
 	void CopySolution(vector<int> *from, vector<int> *to);
 	//根据城市编号在解中寻找城市的位置
