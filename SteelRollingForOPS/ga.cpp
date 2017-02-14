@@ -193,17 +193,17 @@ void GA::Initialize()
 	best = vector<int>(HR::s_HRCount);
 	bestValue = LLONG_MAX;
 	prob = vector<double>(PopSize);
-	for (int i = 0; i < PopSize / 3; i++)		//给初始种群生成随机个体
+	for (int i = 0; i < 0; i++)		//给初始种群生成随机个体
 	{
 		individual.push_back(GenerateRandomTour());
 		fitness.push_back(0);
 	}
-	for (int i = PopSize / 3; i < PopSize * 2 / 3; i++)		//给初始种群生成时间顺序个体
+	for (int i = 0; i < PopSize / 2; i++)		//给初始种群生成时间顺序个体
 	{
 		individual.push_back(GenerateSequenceTour());
 		fitness.push_back(0);
 	}
-	for (int i = PopSize * 2 / 3; i < PopSize; i++)		//给初始种群生成孔型顺序个体
+	for (int i = PopSize / 2; i < PopSize; i++)		//给初始种群生成孔型顺序个体
 	{
 		individual.push_back(GenerateSequenceTour2());
 		fitness.push_back(0);
@@ -248,12 +248,10 @@ void GA::LocalSearch()
 {
 	for (int i = 0; i < PopSize; i++)					//对种群中每个个体做循环
 	{
-		if (random01() < Pm)							//变异概率
+		if (random01() < 1)							//变异概率
 		{
 			int number = randomInteger(1, 6);
-			switch (number)
-			{
-			case 1:// Job Move
+			if(number == 1)// Job Move
 			{
 					   int i1 = randomInteger(0, HR::s_HRCount - 1);	//随机生成两个数
 					   int i2 = randomInteger(0, HR::s_HRCount - 1);
@@ -273,14 +271,16 @@ void GA::LocalSearch()
 							   SwapOperator(j, j - 1, &individual[i]);		//对解中这两个位置的数交换
 						   }
 					   }
-					   break;
 			}
-			case 2:// Job Exchange
+			else if (number == 2)// Job Exchange
 			{
- 
-					   break;
+					   int i1 = randomInteger(0, HR::s_HRCount - 1);	//随机生成两个数
+					   int i2 = randomInteger(0, HR::s_HRCount - 1);
+					   while (i1 == i2)
+						   i2 = randomInteger(0, HR::s_HRCount - 1);
+					   SwapOperator(i1, i2, &individual[i]);		//对解中这两个位置的数交换
 			}
-			case 3:// Batch Move
+			else if (number == 3)// Batch Move
 			{
 					   int i1 = randomInteger(0, HR::s_HRCount - 1);	//随机生成两个数
 					   int i2 = randomInteger(0, HR::s_HRCount - 1);
@@ -301,6 +301,8 @@ void GA::LocalSearch()
 							   break;
 						   }
 					   }
+					   if (i11 == -1)
+						   i11 = 0;
 					   for (i12 = i1; i12 < HR::s_HRCount; i12++)
 					   {
 						   int NO12 = individual[i][i12];
@@ -311,6 +313,8 @@ void GA::LocalSearch()
 							   break;
 						   }
 					   }
+					   if (i12 == HR::s_HRCount)
+						   i12 = HR::s_HRCount - 1;
 					   for (i21 = i2; i21 >= 0; i21--)
 					   {
 						   int NO21 = individual[i][i21];
@@ -333,10 +337,10 @@ void GA::LocalSearch()
 							   break;
 						   }
 					   }
-					   if (i12 == HR::s_HRCount)
-						   i12 = HR::s_HRCount;
+					   if (i22 == HR::s_HRCount)
+						   i22 = HR::s_HRCount - 1;
 					   if (i11 == i21)
-						   break;
+						   continue;
 					   if (i11 == i12 || i21 == i22)
 						   bool aaaaaa = true;
 					   vector<int> individual_temp;
@@ -364,25 +368,23 @@ void GA::LocalSearch()
 						   }
 						   else
 						   {
-							   break;
-							   /*for (int j = i21; j <= i22; j++)
+							   for (int j = i21; j <= i22; j++)
 							   {
-							   individual_temp.push_back(individual[i][j]);
+								   individual_temp.push_back(individual[i][j]);
 							   }
 							   for (int j = i11; j <= i12; j++)
 							   {
-							   individual_temp.push_back(individual[i][j]);
+								   individual_temp.push_back(individual[i][j]);
 							   }
 							   for (int j = i22 + 1; j < HR::s_HRCount; j++)
 							   {
-							   individual_temp.push_back(individual[i][j]);
-							   }*/
+								   individual_temp.push_back(individual[i][j]);
+							   }
 						   }
 					   }
 					   else
 					   {
-						   break;
-						   /*for (int j = 0; j < i21; j++)
+						   for (int j = 0; j < i21; j++)
 						   {
 							   individual_temp.push_back(individual[i][j]);
 						   }
@@ -420,130 +422,397 @@ void GA::LocalSearch()
 							   {
 								   individual_temp.push_back(individual[i][j]);
 							   }
-						   }*/
+						   }
 					   }
-					   int aaa = 0;
 					   if (individual_temp.size() != HR::s_HRCount)
 					   {
-						   aaa = 862;
-						   cout << endl;
+						   cout << i11 << "  " << i12 << "  " << i21 << "  " << i22 << endl;
 					   }
 					   individual[i] = individual_temp;
-					   break;
 			}
-			case 4:// Batch Exchange
+			else if (number == 4)// Batch Exchange
 			{
-					   //int i1 = randomInteger(0, HR::s_HRCount - 1);	//随机生成两个数
-					   //int i2 = randomInteger(0, HR::s_HRCount - 1);
-					   //while (i1 == i2)
-						  // i2 = randomInteger(0, HR::s_HRCount - 1);
-					   //int i11, i12, i21, i22;
-					   //int NO1 = individual[i][i1];
-					   //HR* hr1 = HR::s_mapSetOfHR.find(NO1)->second;
-					   //int NO2 = individual[i][i2];
-					   //HR* hr2 = HR::s_mapSetOfHR.find(NO2)->second;
-					   //for (i11 = i1; i11 >= 0; i11--)
-					   //{
-						  // int NO11 = individual[i][i11];
-						  // HR* hr11 = HR::s_mapSetOfHR.find(NO11)->second;
-						  // if (hr1->m_OUT_THICK != hr11->m_OUT_THICK)
-						  // {
-							 //  i11 += 1;
-							 //  break;
-						  // }
-					   //}
-					   //for (i12 = i1; i12 < HR::s_HRCount; i12++)
-					   //{
-						  // int NO12 = individual[i][i12];
-						  // HR* hr12 = HR::s_mapSetOfHR.find(NO12)->second;
-						  // if (hr1->m_OUT_THICK != hr12->m_OUT_THICK)
-						  // {
-							 //  i12 -= 1;
-							 //  break;
-						  // }
-					   //}
-					   //for (i21 = i2; i21 >= 0; i21--)
-					   //{
-						  // int NO21 = individual[i][i21];
-						  // HR* hr21 = HR::s_mapSetOfHR.find(NO21)->second;
-						  // if (hr2->m_OUT_THICK != hr21->m_OUT_THICK)
-						  // {
-							 //  i21 += 1;
-							 //  break;
-						  // }
-					   //}
-					   //if (i21 == -1)
-						  // i21 = 0;
-					   //for (i22 = i2; i22 < HR::s_HRCount; i22++)
-					   //{
-						  // int NO22 = individual[i][i22];
-						  // HR* hr22 = HR::s_mapSetOfHR.find(NO22)->second;
-						  // if (hr2->m_OUT_THICK != hr22->m_OUT_THICK)
-						  // {
-							 //  i22 -= 1;
-							 //  break;
-						  // }
-					   //}
-					   //if (i12 == HR::s_HRCount)
-						  // i12 = HR::s_HRCount;
-					   //if (i11 == i21)
-						  // break;
-					   //if (i11 == i12 || i21 == i22)
-						  // bool aaaaaa = true;
-					   //vector<int> individual_temp;
-					   //if (i11 < i21)
-					   //{
-						  // for (int j = 0; j < i11; j++)
-						  // {
-							 //  individual_temp.push_back(individual[i][j]);
-						  // }
-						  // for (int j = i21; j <= i22; j++)
-						  // {
-							 //  individual_temp.push_back(individual[i][j]);
-						  // }
-						  // for (int j = i12 + 1; j < i21; j++)
-						  // {
-							 //  individual_temp.push_back(individual[i][j]);
-						  // }
-						  // for (int j = i11; j <= i12; j++)
-						  // {
-							 //  individual_temp.push_back(individual[i][j]);
-						  // }
-						  // for (int j = i22 + 1; j < HR::s_HRCount; j++)
-						  // {
-							 //  individual_temp.push_back(individual[i][j]);
-						  // }
-					   //}
-					   //else
-					   //{
-						  // for (int j = 0; j < i21; j++)
-						  // {
-							 //  individual_temp.push_back(individual[i][j]);
-						  // }
-						  // for (int j = i11; j <= i12; j++)
-						  // {
-							 //  individual_temp.push_back(individual[i][j]);
-						  // }
-						  // for (int j = i22 + 1; j < i11; j++)
-						  // {
-							 //  individual_temp.push_back(individual[i][j]);
-						  // }
-						  // for (int j = i21; j <= i22; j++)
-						  // {
-							 //  individual_temp.push_back(individual[i][j]);
-						  // }
-						  // for (int j = i12 + 1; j < HR::s_HRCount; j++)
-						  // {
-							 //  individual_temp.push_back(individual[i][j]);
-						  // }
-					   //}
-					   //if (individual_temp.size() != HR::s_HRCount)
-						  // bool aaa = true;
-					   //individual[i] = individual_temp;
-					   break;
+					   int i1 = randomInteger(0, HR::s_HRCount - 1);	//随机生成两个数
+					   int i2 = randomInteger(0, HR::s_HRCount - 1);
+					   while (i1 == i2)
+						   i2 = randomInteger(0, HR::s_HRCount - 1);
+					   int i11, i12, i21, i22;
+					   int NO1 = individual[i][i1];
+					   HR* hr1 = HR::s_mapSetOfHR.find(NO1)->second;
+					   int NO2 = individual[i][i2];
+					   HR* hr2 = HR::s_mapSetOfHR.find(NO2)->second;
+					   for (i11 = i1; i11 >= 0; i11--)
+					   {
+						   int NO11 = individual[i][i11];
+						   HR* hr11 = HR::s_mapSetOfHR.find(NO11)->second;
+						   if (hr1->m_OUT_THICK != hr11->m_OUT_THICK)
+						   {
+							   i11 += 1;
+							   break;
+						   }
+					   }
+					   if (i11 == -1)
+						   i11 = 0;
+					   for (i12 = i1; i12 < HR::s_HRCount; i12++)
+					   {
+						   int NO12 = individual[i][i12];
+						   HR* hr12 = HR::s_mapSetOfHR.find(NO12)->second;
+						   if (hr1->m_OUT_THICK != hr12->m_OUT_THICK)
+						   {
+							   i12 -= 1;
+							   break;
+						   }
+					   }
+					   if (i12 == HR::s_HRCount)
+						   i12 = HR::s_HRCount - 1;
+					   for (i21 = i2; i21 >= 0; i21--)
+					   {
+						   int NO21 = individual[i][i21];
+						   HR* hr21 = HR::s_mapSetOfHR.find(NO21)->second;
+						   if (hr2->m_OUT_THICK != hr21->m_OUT_THICK)
+						   {
+							   i21 += 1;
+							   break;
+						   }
+					   }
+					   if (i21 == -1)
+						   i21 = 0;
+					   for (i22 = i2; i22 < HR::s_HRCount; i22++)
+					   {
+						   int NO22 = individual[i][i22];
+						   HR* hr22 = HR::s_mapSetOfHR.find(NO22)->second;
+						   if (hr2->m_OUT_THICK != hr22->m_OUT_THICK)
+						   {
+							   i22 -= 1;
+							   break;
+						   }
+					   }
+					   if (i22 == HR::s_HRCount)
+						   i22 = HR::s_HRCount - 1;
+					   if (i11 == i21)
+						   continue;
+					   if (i11 == i12 || i21 == i22)
+						   bool aaaaaa = true;
+					   vector<int> individual_temp;
+					   if (i11 < i21)
+					   {
+						   for (int j = 0; j < i11; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i21; j <= i22; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i12 + 1; j < i21; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i11; j <= i12; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i22 + 1; j < HR::s_HRCount; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+					   }
+					   else
+					   {
+						   for (int j = 0; j < i21; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i11; j <= i12; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i22 + 1; j < i11; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i21; j <= i22; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i12 + 1; j < HR::s_HRCount; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+					   }
+					   if (individual_temp.size() != HR::s_HRCount)
+					   {
+						   cout << i11 << "  " << i12 << "  " << i21 << "  " << i22 << endl;
+					   }
+					   individual[i] = individual_temp;
 			}
-			default:
-				break;
+			else if (number == 5)// Batch Combine
+			{
+					   int i1 = randomInteger(0, HR::s_HRCount - 1);	//随机生成两个数
+					   int i2 = randomInteger(0, HR::s_HRCount - 1);
+					   while (i1 == i2)
+						   i2 = randomInteger(0, HR::s_HRCount - 1);
+					   int i11, i12, i21, i22;
+					   int NO1 = individual[i][i1];
+					   HR* hr1 = HR::s_mapSetOfHR.find(NO1)->second;
+					   int NO2 = individual[i][i2];
+					   HR* hr2 = HR::s_mapSetOfHR.find(NO2)->second;
+					   if (hr1->m_OUT_THICK != hr2->m_OUT_THICK)
+						   continue;
+					   for (i11 = i1; i11 >= 0; i11--)
+					   {
+						   int NO11 = individual[i][i11];
+						   HR* hr11 = HR::s_mapSetOfHR.find(NO11)->second;
+						   if (hr1->m_OUT_THICK != hr11->m_OUT_THICK)
+						   {
+							   i11 += 1;
+							   break;
+						   }
+					   }
+					   if (i11 == -1)
+						   i11 = 0;
+					   for (i12 = i1; i12 < HR::s_HRCount; i12++)
+					   {
+						   int NO12 = individual[i][i12];
+						   HR* hr12 = HR::s_mapSetOfHR.find(NO12)->second;
+						   if (hr1->m_OUT_THICK != hr12->m_OUT_THICK)
+						   {
+							   i12 -= 1;
+							   break;
+						   }
+					   }
+					   if (i12 == HR::s_HRCount)
+						   i12 = HR::s_HRCount - 1;
+					   for (i21 = i2; i21 >= 0; i21--)
+					   {
+						   int NO21 = individual[i][i21];
+						   HR* hr21 = HR::s_mapSetOfHR.find(NO21)->second;
+						   if (hr2->m_OUT_THICK != hr21->m_OUT_THICK)
+						   {
+							   i21 += 1;
+							   break;
+						   }
+					   }
+					   if (i21 == -1)
+						   i21 = 0;
+					   for (i22 = i2; i22 < HR::s_HRCount; i22++)
+					   {
+						   int NO22 = individual[i][i22];
+						   HR* hr22 = HR::s_mapSetOfHR.find(NO22)->second;
+						   if (hr2->m_OUT_THICK != hr22->m_OUT_THICK)
+						   {
+							   i22 -= 1;
+							   break;
+						   }
+					   }
+					   if (i22 == HR::s_HRCount)
+						   i22 = HR::s_HRCount - 1;
+					   if (i11 == i21)
+						   continue;
+					   if (i11 == i12 || i21 == i22)
+						   bool aaaaaa = true;
+					   vector<int> individual_temp;
+					   if (i11 < i21)
+					   {
+						   for (int j = 0; j < i11; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i12 + 1; j < i21; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i22 + 1; j < HR::s_HRCount; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+					   }
+					   else
+					   {
+						   for (int j = 0; j < i21; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i22 + 1; j < i11; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+						   for (int j = i12 + 1; j < HR::s_HRCount; j++)
+						   {
+							   individual_temp.push_back(individual[i][j]);
+						   }
+					   }
+					   int i3 = randomInteger(0, individual_temp.size());	//随机生成两个数
+					   int qh = randomInteger(0, 1);
+					   if (qh == 0)
+					   {
+						   int NO3 = individual[i][i3];
+						   HR* hr3 = HR::s_mapSetOfHR.find(NO3)->second;
+						   for (i3; i3 >= 0; i3--)
+						   {
+							   int NO31 = individual[i][i3];
+							   HR* hr31 = HR::s_mapSetOfHR.find(NO31)->second;
+							   if (hr3->m_OUT_THICK != hr31->m_OUT_THICK)
+							   {
+								   i3 += 1;
+								   break;
+							   }
+						   }
+						   if (i3 == -1)
+							   i3 = 0;
+					   }
+					   else
+					   {
+						   int NO3 = individual[i][i3];
+						   HR* hr3 = HR::s_mapSetOfHR.find(NO3)->second;
+						   for (i3; i3 <HR::s_HRCount; i3++)
+						   {
+							   int NO32 = individual[i][i3];
+							   HR* hr32 = HR::s_mapSetOfHR.find(NO32)->second;
+							   if (hr3->m_OUT_THICK != hr32->m_OUT_THICK)
+							   {
+								   i3 -= 1;
+								   break;
+							   }
+						   }
+						   if (i3 == HR::s_HRCount)
+							   i3 = HR::s_HRCount - 1;
+					   }
+					   individual_temp.insert(individual_temp.begin() + i3, individual[i].begin() + i21, individual[i].begin() + i22 + 1);
+					   individual_temp.insert(individual_temp.begin() + i3, individual[i].begin() + i11, individual[i].begin() + i12 + 1);
+					   individual[i] = individual_temp;
+					   if (individual_temp.size() != HR::s_HRCount)
+					   {
+						   cout << individual_temp.size() << endl;
+						   cout << i11 << "  " << i12 << "  " << i21 << "  " << i22 << endl;
+					   }
+			}
+			else if (number == 6)// Batch Break
+			{
+					   int i1 = randomInteger(0, HR::s_HRCount - 1);
+					   int i11, i12;
+					   int NO1 = individual[i][i1];
+					   HR* hr1 = HR::s_mapSetOfHR.find(NO1)->second;
+					   for (i11 = i1; i11 >= 0; i11--)
+					   {
+						   int NO11 = individual[i][i11];
+						   HR* hr11 = HR::s_mapSetOfHR.find(NO11)->second;
+						   if (hr1->m_OUT_THICK != hr11->m_OUT_THICK)
+						   {
+							   i11 += 1;
+							   break;
+						   }
+					   }
+					   if (i11 == -1)
+						   i11 = 0;
+					   for (i12 = i1; i12 < HR::s_HRCount; i12++)
+					   {
+						   int NO12 = individual[i][i12];
+						   HR* hr12 = HR::s_mapSetOfHR.find(NO12)->second;
+						   if (hr1->m_OUT_THICK != hr12->m_OUT_THICK)
+						   {
+							   i12 -= 1;
+							   break;
+						   }
+					   }
+					   if (i12 == HR::s_HRCount)
+						   i12 = HR::s_HRCount - 1;
+					   if (i11 >= i12)
+						   continue;
+					   vector<int> individual_temp;
+					   individual_temp.insert(individual_temp.end(), individual[i].begin(), individual[i].begin() + i11);
+					   individual_temp.insert(individual_temp.end(), individual[i].begin() + i12 + 1, individual[i].end());
+					   int i2 = 0, i3 = HR::s_HRCount - 1;
+					   if (i11 != 0)
+						   i2 = randomInteger(0, i11 - 1);
+					   if (i12 != HR::s_HRCount - 1)
+						   i3 = randomInteger(i12 + 1, HR::s_HRCount - 1);
+					   int qh = randomInteger(0, 1);
+					   if (qh == 0)
+					   {
+						   int NO3 = individual[i][i3];
+						   HR* hr3 = HR::s_mapSetOfHR.find(NO3)->second;
+						   for (i3; i3 >= i11; i3--)
+						   {
+							   int NO31 = individual[i][i3];
+							   HR* hr31 = HR::s_mapSetOfHR.find(NO31)->second;
+							   if (hr3->m_OUT_THICK != hr31->m_OUT_THICK)
+							   {
+								   i3 += 1;
+								   break;
+							   }
+						   }
+						   if (i3 == i11 - 1)
+							   i3 = i11;
+					   }
+					   else
+					   {
+						   int NO3 = individual[i][i3];
+						   HR* hr3 = HR::s_mapSetOfHR.find(NO3)->second;
+						   for (i3; i3 < individual[i].size(); i3++)
+						   {
+							   int NO32 = individual[i][i3];
+							   HR* hr32 = HR::s_mapSetOfHR.find(NO32)->second;
+							   if (hr3->m_OUT_THICK != hr32->m_OUT_THICK)
+							   {
+								   i3 -= 1;
+								   break;
+							   }
+						   }
+						   if (i3 == individual[i].size())
+							   i3 = individual[i].size() - 1;
+					   }
+					   qh = randomInteger(0, 1);
+					   if (qh == 0)
+					   {
+						   int NO2 = individual[i][i2];
+						   HR* hr2 = HR::s_mapSetOfHR.find(NO2)->second;
+						   for (i2; i2 >= 0; i2--)
+						   {
+							   int NO21 = individual[i][i2];
+							   HR* hr21 = HR::s_mapSetOfHR.find(NO21)->second;
+							   if (hr2->m_OUT_THICK != hr21->m_OUT_THICK)
+							   {
+								   i2 += 1;
+								   break;
+							   }
+						   }
+						   if (i2 == -1)
+							   i2 = 0;
+					   }
+					   else
+					   {
+						   int NO2 = individual[i][i2];
+						   HR* hr2 = HR::s_mapSetOfHR.find(NO2)->second;
+						   for (i2; i2 < i11; i2++)
+						   {
+							   int NO22 = individual[i][i2];
+							   HR* hr22 = HR::s_mapSetOfHR.find(NO22)->second;
+							   if (hr2->m_OUT_THICK != hr22->m_OUT_THICK)
+							   {
+								   i2 -= 1;
+								   break;
+							   }
+						   }
+						   if (i2 == i11)
+							   i2 = i11 - 1;
+					   }
+					   if (i2 > i1)
+					   {
+						   i2 -= (i12 + 1 - i11);
+					   }
+					   if (i3 > i1)
+					   {
+						   i3 -= (i12 + 1 - i11);
+					   }
+					   individual_temp.insert(individual_temp.begin() + i3, individual[i].begin() + i1, individual[i].begin() + i12 + 1);
+					   individual_temp.insert(individual_temp.begin() + i2, individual[i].begin() + i11, individual[i].begin() + i1);
+					   cout << "------------------------------------" << endl;
+					   cout << i << endl;
+					   cout << individual.size() << endl;
+					   cout << individual_temp.size() << endl;
+					   cout << "------------------------------------" << endl;
+					   individual[i] = individual_temp;
 			}
 		}
 	}
