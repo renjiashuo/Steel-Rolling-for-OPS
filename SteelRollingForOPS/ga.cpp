@@ -112,7 +112,7 @@ void GA::ComputeFitness()
 	for(int i = 0; i < PopSize; i++)
 	{
 		fitness[i] = ComputeDistance(individual[i]);			//计算每个个体的旅行总距离
-		max = fitness[i] < max ? fitness[i] : max;			//找出当前解中的旅行总距离最大值
+		max = fitness[i] > max ? fitness[i] : max;			//找出当前解中的旅行总距离最大值
 		//cout << min << endl;
 		//cout << bestValue << endl;
 		if( fitness[i] < bestValue )						//找出当前解中的最优解
@@ -797,21 +797,26 @@ void GA::LocalSearch()
 						   if (i2 == i11)
 							   i2 = i11 - 1;
 					   }
-					   if (i2 > i1)
+					   if (i2 == -1)
+						   i2 = 0; 
+					   //cout << i1 << "\t" << i11 << "\t" << i12 << '\t' << i2 << '\t' << i3 << endl;
+					   if (i2 >= i1)
 					   {
 						   i2 -= (i12 + 1 - i11);
 					   }
-					   if (i3 > i1)
+					   if (i3 >= i1)
 					   {
 						   i3 -= (i12 + 1 - i11);
 					   }
+					   //cout << individual_temp.size() << endl;
+					   //cout << i1 << "\t" << i11 << "\t" << i12 << '\t' << i2 << '\t' << i3 << endl;
 					   individual_temp.insert(individual_temp.begin() + i3, individual[i].begin() + i1, individual[i].begin() + i12 + 1);
 					   individual_temp.insert(individual_temp.begin() + i2, individual[i].begin() + i11, individual[i].begin() + i1);
-					   cout << "------------------------------------" << endl;
-					   cout << i << endl;
-					   cout << individual.size() << endl;
-					   cout << individual_temp.size() << endl;
-					   cout << "------------------------------------" << endl;
+					   //cout << "------------------------------------" << endl;
+					   //cout << i << endl;
+					   //cout << individual.size() << endl;
+					   //cout << individual_temp.size() << endl;
+					   //cout << "------------------------------------" << endl;
 					   individual[i] = individual_temp;
 			}
 		}
@@ -824,7 +829,7 @@ void GA::GeneticAlgorithm()
 	GA ga;
 	ga.Initialize();					//初始化
 	ga.ComputeFitness();				//计算初始化所得的种群的目标函数值
-
+	cout << "初始解生成完毕，开始计算！" << endl;
 	for(int g = 1; g <= ga.Gen; g++)	//循环总次数
 	{
 		if (g % 100 == 0)
@@ -859,20 +864,17 @@ long long GA::ComputeDistance(vector<int> individual)
 		endTime = beginTime + hr1->m_MAKING_TIME_t;
 		// 计算tardiness
 		int aTardiness = endTime - hr2->m_NLST_t > 0 ? endTime - hr2->m_NLST_t : 0;
-		//cout << aTardiness << endl;
-		tardiness += aTardiness;
+		if (aTardiness > 0)
+			tardiness += 1;
 		// 切换到下一个
 		NO1 = NO2;
 		hr1 = hr2;
 		rollPass1 = rollPass2;
 		beginTime = hr1->m_NEST_t > endTime ? hr1->m_NEST_t : endTime;
 	}
-	// 思考：孔型如何与时间加权。
 	string endTimeStr = Time::DatetimeToString(endTime + HR::s_standTime);
-	sum = tardiness;
-	//cout << sum << endl;
-	//cout << LLONG_MAX << endl;
-	//cout << (sum > LLONG_MAX ? "sum>LLONG_MAX" : "sum<LLONG_MAX") << endl;
+	//sum = switchFrequency + tardiness / 10000;
+	sum = switchFrequency + tardiness * 100 ;
 	return sum;
 }
 
