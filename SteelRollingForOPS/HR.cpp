@@ -54,7 +54,7 @@ HR::HR(int NO, string REC_CREATE_TIME, string REC_CREATOR, string REC_REVISE_TIM
 
 void HR::readData()
 {
-	ifstream file("TOPPPHR01.csv");
+	ifstream file("IA.csv");
 	while (file.good())
 	{
 		//定义存储变量

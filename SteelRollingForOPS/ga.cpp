@@ -846,11 +846,13 @@ long long GA::ComputeDistance(vector<int> individual)
 {
 	long long sum = 0;
 	int switchFrequency = 0;
+	int absThick = 0;
 	int absTime = 0;
 	time_t beginTime = 0, endTime = 0, tardiness = 0;
 	// 第一个
 	int NO1 = individual[0];
 	HR* hr1 = HR::s_mapSetOfHR.find(NO1)->second;
+	int OUT_THICK1 = hr1->m_OUT_THICK;
 	ROLLPASS* rollPass1 = hr1->m_rollPass;
 	beginTime = hr1->m_NEST_t > endTime ? hr1->m_NEST_t : endTime;
 	for (int i = 1; i < individual.size(); i++)
@@ -858,6 +860,7 @@ long long GA::ComputeDistance(vector<int> individual)
 		// 计算frequency
 		int NO2 = individual[i];
 		HR* hr2 = HR::s_mapSetOfHR.find(NO2)->second;
+		int OUT_THICK2 = hr2->m_OUT_THICK;
 		ROLLPASS* rollPass2 = hr2->m_rollPass;
 		int frequency = ROLLPASS::s_distance.find(make_pair(rollPass1, rollPass2))->second;
 		switchFrequency += frequency;
@@ -866,15 +869,24 @@ long long GA::ComputeDistance(vector<int> individual)
 		int aTardiness = endTime - hr2->m_NLST_t > 0 ? endTime - hr2->m_NLST_t : 0;
 		if (aTardiness > 0)
 			tardiness += 1;
+		// 计算与前一工单出口厚度差的绝对值
+		absThick += abs(OUT_THICK1 - OUT_THICK2);
 		// 切换到下一个
 		NO1 = NO2;
 		hr1 = hr2;
+		OUT_THICK1 = OUT_THICK2;
 		rollPass1 = rollPass2;
 		beginTime = hr1->m_NEST_t > endTime ? hr1->m_NEST_t : endTime;
+		// 计算停工待料时间
+		if (beginTime > endTime)
+			absTime += (beginTime - endTime);
 	}
 	string endTimeStr = Time::DatetimeToString(endTime + HR::s_standTime);
 	//sum = switchFrequency + tardiness / 10000;
 	sum = switchFrequency + tardiness * 100 ;
+	//a0*与前一工单孔型切换时间+a1*与前一工单出口厚度差的绝对值+a2*停工待料时间+a3*NLST
+	//a0 = 7, a1 = 1, a2 = 1000, a3 = 0.001
+	//sum = switchFrequency + absThick + absTime;
 	return sum;
 }
 
